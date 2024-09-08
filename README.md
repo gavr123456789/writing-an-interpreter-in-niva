@@ -1,2 +1,3 @@
 # writing-an-interpreter-in-niva
-writing an interpreter in go book reimplemented in my language niva
+"Writing an interpreter in go" book by Thorsten Ball reimplemented in my language niva
+

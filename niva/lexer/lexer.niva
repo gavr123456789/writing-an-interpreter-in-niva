@@ -1,0 +1,56 @@
+type Lexer
+  input: String
+  pos: Int
+  readPos: Int
+  ch: Char
+
+constructor Lexer input::String = [
+  l = Lexer input: input pos: 0 readPos: 0 ch: 'ъ'
+  l readChar
+  ^l
+]
+Lexer readChar = [
+  readPos >= input count => 
+    ch <- 'ъ' |=>  // TODO support \u0000
+    ch <- input at: readPos
+  
+  pos <- readPos
+  readPos <- readPos inc
+]
+Lexer nextToken -> Token = [
+  tok = | ch 
+  | '=' => Token kind: TokenType.ASSIGN
+  | ';' => Token kind: TokenType.SEMICOLON
+  | '(' => Token kind: TokenType.LPAREN
+  | ')' => Token kind: TokenType.RPAREN
+  | ',' => Token kind: TokenType.COMMA
+  | '+' => Token kind: TokenType.PLUS
+  | '{' => Token kind: TokenType.LBRACE
+  | '}' => Token kind: TokenType.RBRACE
+  |=> Token kind: TokenType.EOF
+
+  .readChar
+  ^ tok
+]
+
+Test sas -> Unit! = [
+  input = "=+(){},;"
+  listOfTokens = {
+    (Token kind: TokenType.PLUS lit: "=")
+    (Token kind: TokenType.PLUS lit: "+")
+    (Token kind: TokenType.LPAREN lit: "(")
+    (Token kind: TokenType.RPAREN lit: ")")
+    (Token kind: TokenType.LBRACE lit: "{")
+    (Token kind: TokenType.RBRACE lit: "}")
+    (Token kind: TokenType.COMMA lit: ",")
+    (Token kind: TokenType.SEMICOLON lit: ";")
+  }
+  
+  l = Lexer input: input
+
+  listOfTokens forEach: [
+    tok = l nextToken
+    Assert that: tok kind equals: it kind
+    Assert that: tok lit equals: it lit
+  ]
+]

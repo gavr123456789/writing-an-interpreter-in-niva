@@ -1,0 +1,27 @@
+type Token 
+  kind: TokenType
+  lit: String
+
+constructor Token kind::TokenType = 
+  Token 
+    kind: kind 
+    lit: kind v
+ 
+enum TokenType v: String = 
+| ILLEGAL v: "ILLEGAL" 
+| EOF v: "EOF"
+| IDENT v: "IDENT" // add, foobar, x, y, ...
+| INT v: "INT"
+| ASSIGN   v: "="
+| PLUS     v: "+"
+| COMMA     v: ","
+| SEMICOLON v: ";"
+| LPAREN v: "("
+| RPAREN v: ")"
+| LBRACE v: "{"
+| RBRACE v: "}"
+| FUNCTION v: "FUNCTION"
+| LET v: "LET"
+
+
+

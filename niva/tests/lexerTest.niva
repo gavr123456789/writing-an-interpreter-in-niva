@@ -1,0 +1,22 @@
+
+Test sas -> Unit! = [
+  input = "=+(){},;"
+  listOfTokens = {
+    (Token kind: TokenType.PLUS lit: "=")
+    (Token kind: TokenType.PLUS lit: "+")
+    (Token kind: TokenType.LPAREN lit: "(")
+    (Token kind: TokenType.RPAREN lit: ")")
+    (Token kind: TokenType.LBRACE lit: "{")
+    (Token kind: TokenType.RBRACE lit: "}")
+    (Token kind: TokenType.COMMA lit: ",")
+    (Token kind: TokenType.SEMICOLON lit: ";")
+  }
+  
+  l = Lexer input: input
+
+  listOfTokens forEach: [
+    tok = l nextToken
+    Assert that: tok kind equals: it kind
+    Assert that: tok lit equals: it lit
+  ]
+]
