@@ -6,12 +6,13 @@ type Lexer
 
 constructor Lexer input::String = [
   l = Lexer input: input pos: 0 readPos: 0 ch: 'ъ'
-  l readChar
-  ^l
-]
+  l readChar 
+  ^l 
+] 
+
 Lexer readChar = [
   readPos >= input count => 
-    ch <- 'ъ' |=>  // TODO support \u0000
+    ch <- '\u0000' |=>  
     ch <- input at: readPos
   
   pos <- readPos

@@ -6,7 +6,8 @@ constructor Token kind::TokenType =
   Token 
     kind: kind 
     lit: kind v
- 
+
+
 enum TokenType v: String = 
 | ILLEGAL v: "ILLEGAL" 
 | EOF v: "EOF"
