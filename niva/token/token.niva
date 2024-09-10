@@ -10,7 +10,7 @@ constructor Token kind::TokenType =
 
 enum TokenType v: String = 
 | ILLEGAL v: "ILLEGAL" 
-| EOF v: "EOF"
+| EOF v: "\u0000"
 | IDENT v: "IDENT" // add, foobar, x, y, ...
 | INT v: "INT"
 | ASSIGN   v: "="
@@ -25,4 +25,11 @@ enum TokenType v: String =
 | LET v: "LET"
 
 
+constructor Token keywords = #{
+  "fn" TokenType.FUNCTION
+  "let" TokenType.LET
+}
 
+constructor Token lookupIdent::String = 
+  Token keywords at: lookupIdent |> 
+    unpackOrValue: TokenType.IDENT

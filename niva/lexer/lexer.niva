@@ -14,11 +14,15 @@ Lexer readChar = [
   readPos >= input count => 
     ch <- '\u0000' |=>  
     ch <- input at: readPos
-  
+    
+  // > ch TODO inline repl bug
   pos <- readPos
   readPos <- readPos inc
 ]
+
+
 Lexer nextToken -> Token = [
+  .skipWhiteSpaces
   tok = | ch 
   | '=' => Token kind: TokenType.ASSIGN
   | ';' => Token kind: TokenType.SEMICOLON
@@ -28,30 +32,51 @@ Lexer nextToken -> Token = [
   | '+' => Token kind: TokenType.PLUS
   | '{' => Token kind: TokenType.LBRACE
   | '}' => Token kind: TokenType.RBRACE
-  |=> Token kind: TokenType.EOF
+  | '\u0000' => Token kind: TokenType.EOF
+  
+  |=> [
+    ch isLetter || (ch == '_') => [
+      lit = this readIdentifier
+      ^Token lit: lit kind: (Token lookupIdent: lit) // early exit because we dont need another readchar from line 54
+    ] |=>  
+    ch isDigit => [
+      lit = this readNumber
+      ^ Token lit: lit kind: TokenType.INT
+    ] |=> 
+    Token kind: TokenType.ILLEGAL
+  ]
 
   .readChar
   ^ tok
 ]
 
-Test sas -> Unit! = [
-  input = "=+(){},;"
-  listOfTokens = {
-    (Token kind: TokenType.PLUS lit: "=")
-    (Token kind: TokenType.PLUS lit: "+")
-    (Token kind: TokenType.LPAREN lit: "(")
-    (Token kind: TokenType.RPAREN lit: ")")
-    (Token kind: TokenType.LBRACE lit: "{")
-    (Token kind: TokenType.RBRACE lit: "}")
-    (Token kind: TokenType.COMMA lit: ",")
-    (Token kind: TokenType.SEMICOLON lit: ";")
-  }
-  
-  l = Lexer input: input
 
-  listOfTokens forEach: [
-    tok = l nextToken
-    Assert that: tok kind equals: it kind
-    Assert that: tok lit equals: it lit
+Lexer readIdentifier -> String = [
+  localPos = pos
+  [ch isLetter] whileTrue: [
+    .readChar
   ]
+  result = input slice: localPos..<pos
+//> ten
+  >result
+  ^result
+]
+
+Lexer readNumber -> String = [
+  localPos = pos 
+  [ch isDigit] whileTrue: [
+    .readChar
+  ]
+
+  result = input slice: localPos..<pos
+//> 10
+  >result
+  ^result
+]
+
+Lexer skipWhiteSpaces = [
+  [(ch == ' ') || (ch == '\t') || (ch == '\n') || (ch == '\r')] whileTrue: [
+    .readChar
+  ]
+ 
 ]

@@ -1,8 +1,8 @@
 
-Test sas -> Unit! = [
+Test simple -> Unit! = [
   input = "=+(){},;"
   listOfTokens = {
-    (Token kind: TokenType.PLUS lit: "=")
+    (Token kind: TokenType.ASSIGN lit: "=")
     (Token kind: TokenType.PLUS lit: "+")
     (Token kind: TokenType.LPAREN lit: "(")
     (Token kind: TokenType.RPAREN lit: ")")
@@ -14,8 +14,70 @@ Test sas -> Unit! = [
   
   l = Lexer input: input
 
-  listOfTokens forEach: [
+  listOfTokens forEachIndexed: [ i, it ->
     tok = l nextToken
+    Assert that: tok kind equals: it kind
+    Assert that: tok lit equals: it lit
+  ]
+]
+
+
+Test fullCode -> Unit! = [
+  input = """
+    let five = 5;
+    let ten = 10;
+      let add = fn(x, y) {
+        x + y;
+      };
+    let result = add(five, ten);
+  """ trimIndent
+
+  listOfTokens = {
+    (Token kind: TokenType.LET lit: "let")
+    (Token kind: TokenType.IDENT lit: "five")
+    (Token kind: TokenType.ASSIGN lit: "=")
+    (Token kind: TokenType.INT lit: "5")
+    (Token kind: TokenType.SEMICOLON lit: ";")
+    (Token kind: TokenType.LET lit: "let")
+    (Token kind: TokenType.IDENT lit: "ten")
+    (Token kind: TokenType.ASSIGN lit: "=")
+    (Token kind: TokenType.INT lit: "10")
+    (Token kind: TokenType.SEMICOLON lit: ";")
+    (Token kind: TokenType.LET lit: "let")
+    (Token kind: TokenType.IDENT lit: "add")
+    (Token kind: TokenType.ASSIGN lit: "=")
+    (Token kind: TokenType.FUNCTION lit: "fn")
+    (Token kind: TokenType.LPAREN lit: "(")
+    (Token kind: TokenType.IDENT lit: "x")
+    (Token kind: TokenType.COMMA lit: ",")
+    (Token kind: TokenType.IDENT lit: "y")
+    (Token kind: TokenType.RPAREN lit: ")")
+    (Token kind: TokenType.LBRACE lit: "{")
+    (Token kind: TokenType.IDENT lit: "x")
+    (Token kind: TokenType.PLUS lit: "+")
+    (Token kind: TokenType.IDENT lit: "y")
+    (Token kind: TokenType.SEMICOLON lit: ";")
+    (Token kind: TokenType.RBRACE lit: "}")
+    (Token kind: TokenType.SEMICOLON lit: ";")
+    (Token kind: TokenType.LET lit: "let")
+    (Token kind: TokenType.IDENT lit: "result")
+    (Token kind: TokenType.ASSIGN lit: "=")
+    (Token kind: TokenType.IDENT lit: "add")
+    (Token kind: TokenType.LPAREN lit: "(")
+    (Token kind: TokenType.IDENT lit: "five")
+    (Token kind: TokenType.COMMA lit: ",")
+    (Token kind: TokenType.IDENT lit: "ten")
+    (Token kind: TokenType.RPAREN lit: ")")
+    (Token kind: TokenType.SEMICOLON lit: ";")
+    (Token kind: TokenType.EOF lit: "\u0000")
+
+  }
+  
+  l = Lexer input: input
+
+  listOfTokens forEachIndexed: [ i, it ->
+    tok = l nextToken
+    "$i: $tok" echo
     Assert that: tok kind equals: it kind
     Assert that: tok lit equals: it lit
   ]
