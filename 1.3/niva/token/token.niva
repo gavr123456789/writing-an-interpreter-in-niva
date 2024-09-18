@@ -13,43 +13,21 @@ enum TokenType v: String =
 | EOF v: "\u0000"
 | IDENT v: "IDENT" // add, foobar, x, y, ...
 | INT v: "INT"
-// ops
 | ASSIGN   v: "="
 | PLUS     v: "+"
-| MINUS     v: "-"
-| ASTERISK     v: "*"
-| SLASH     v: "/"
-| LT     v: "<"
-| GT     v: ">"
-| BANG     v: "!"
-| EQ     v: "=="
-| NOT_EQ     v: "!="
-
 | COMMA     v: ","
 | SEMICOLON v: ";"
 | LPAREN v: "("
 | RPAREN v: ")"
 | LBRACE v: "{"
 | RBRACE v: "}"
-// kw
 | FUNCTION v: "FUNCTION"
 | LET v: "LET"
-
-| TRUE v: "TRUE"
-| FALSE v: "FALSE"
-| IF v: "IF"
-| ELSE v: "ELSE"
-| RETURN v: "RETURN"
 
 
 constructor Token keywords = #{
   "fn" TokenType.FUNCTION
   "let" TokenType.LET
-  "true" TokenType.TRUE
-  "false" TokenType.FALSE
-  "if" TokenType.IF
-  "else" TokenType.ELSE
-  "return" TokenType.RETURN
 }
 
 constructor Token lookupIdent::String = 

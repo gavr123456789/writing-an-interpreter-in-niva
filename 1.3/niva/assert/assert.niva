@@ -11,7 +11,7 @@ constructor Assert that::Any equals::Any -> Unit! = [
 
 constructor Assert that::Any equals::Any withMsg::String -> Unit! = [
   a = Compiler getName: 1
-  b = Compiler getName: 2 
+  b = Compiler getName: 2
 
   that != equals => [
     Error throwWithMessage: "$withMsg: $a' != $b' ($that != $equals)"

@@ -20,23 +20,11 @@ Lexer readChar = [
   readPos <- readPos inc
 ]
 
-Lexer peekChar = this readPos >= input count 
-  => '\u0000'
-  |=> input at: (.readPos)
-
 
 Lexer nextToken -> Token = [
   .skipWhiteSpaces
   tok = | ch 
-  | '=' => [
-    this peekChar == '=' => [
-      localCh = ch 
-      this readChar
-      Token kind: TokenType.EQ lit: localCh toString + ch toString
-      
-    ]
-    Token kind: TokenType.ASSIGN
-  ]
+  | '=' => Token kind: TokenType.ASSIGN
   | ';' => Token kind: TokenType.SEMICOLON
   | '(' => Token kind: TokenType.LPAREN
   | ')' => Token kind: TokenType.RPAREN
@@ -44,14 +32,6 @@ Lexer nextToken -> Token = [
   | '+' => Token kind: TokenType.PLUS
   | '{' => Token kind: TokenType.LBRACE
   | '}' => Token kind: TokenType.RBRACE
-  | '-' => Token kind: TokenType.MINUS
-  | '/' => Token kind: TokenType.SLASH
-  | '*' => Token kind: TokenType.ASTERISK
-  | '<' => Token kind: TokenType.LT
-  | '>' => Token kind: TokenType.GT
-  | '!' => Token kind: TokenType.BANG
-
-
   | '\u0000' => Token kind: TokenType.EOF
   
   |=> [

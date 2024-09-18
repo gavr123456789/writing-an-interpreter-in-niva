@@ -1,6 +1,6 @@
 
 Test simple -> Unit! = [
-  input = "=+(){},; -/*<> false true if else return == !="
+  input = "=+(){},;"
   listOfTokens = {
     (Token kind: TokenType.ASSIGN lit: "=")
     (Token kind: TokenType.PLUS lit: "+")
@@ -10,23 +10,6 @@ Test simple -> Unit! = [
     (Token kind: TokenType.RBRACE lit: "}")
     (Token kind: TokenType.COMMA lit: ",")
     (Token kind: TokenType.SEMICOLON lit: ";")
-
-    (Token kind: TokenType.MINUS lit: "-")
-    (Token kind: TokenType.SLASH lit: "/")
-    (Token kind: TokenType.ASTERISK lit: "*")
-    (Token kind: TokenType.LT lit: "<")
-    (Token kind: TokenType.GT lit: ">")
-
-    (Token kind: TokenType.FALSE lit: "false")
-    (Token kind: TokenType.TRUE lit: "true")
-    (Token kind: TokenType.IF lit: "if")
-    (Token kind: TokenType.ELSE lit: "else")
-    (Token kind: TokenType.RETURN lit: "return")
-
-    // (Token kind: TokenType.EQ lit: "==")
-    // (Token kind: TokenType.NOT_EQ lit: "!=")
-
-
   }
   
   l = Lexer input: input
@@ -94,8 +77,8 @@ Test fullCode -> Unit! = [
 
   listOfTokens forEachIndexed: [ i, it ->
     tok = l nextToken
-    // "$i: $tok" echo
+    "$i: $tok" echo
     Assert that: tok kind equals: it kind
     Assert that: tok lit equals: it lit
   ]
-] 
+]
